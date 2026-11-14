@@ -11,7 +11,9 @@ export default async function draw_concepts({ project }: Input) {
   /** Did the subagent write the three concepts? */
   const drawn: boolean = await request(
     delegate(model=`use opus model`, task=`Read \`.logo/brief.md\` and,
-    if it exists, \`.logo/feedback.md\` in ${project}. Draw three
+    if it exists, \`.logo/feedback.md\` in ${project}. If
+    \`.logo/base.svg\` exists, draw three VARIATIONS of it: the same idea
+    with different refinements, not new ideas. Otherwise draw three
     different logo concepts by hand as SVG: \`.logo/concepts/1.svg\`,
     \`2.svg\` and \`3.svg\`. Each one is a simple mark that reads at 16
     pixels: a square viewBox, flat shapes, at most three colors, no text,

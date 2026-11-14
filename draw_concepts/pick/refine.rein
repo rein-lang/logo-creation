@@ -1,0 +1,18 @@
+interface Input {
+  /** The path of the project folder that needs a logo. */
+  project: string;
+  /** The number of the concept to refine: 1, 2 or 3. */
+  n: string;
+}
+
+/**
+ * Make the picked concept the base for the next round. The next round
+ * draws variations of it instead of new concepts.
+ */
+export default async function refine({ project, n }: Input) {
+  return `Copy \`${project}/.logo/concepts/${n}.svg\` to
+  \`${project}/.logo/base.svg\`. Ask the user what to keep and what to
+  change in the logo. Append the answer to \`${project}/.logo/feedback.md\`.
+  Then start logo-creation again for ${project}. It finds the brief and
+  draws variations of \`.logo/base.svg\`.`;
+}

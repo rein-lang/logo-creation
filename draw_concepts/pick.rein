@@ -4,8 +4,11 @@ interface Input {
 }
 
 interface Pick {
-  /** Which concept did the user pick? */
-  choice: "1" | "2" | "3" | "none of them";
+  /** Which concept did the user pick, or which one to refine? */
+  choice:
+    | "1" | "2" | "3"
+    | "refine 1" | "refine 2" | "refine 3"
+    | "none of them";
 }
 
 /**
@@ -21,10 +24,16 @@ export default async function pick({ project }: Input) {
   ${project}/.logo/concepts from this program's folder. It writes
   \`mockup.png\`: each concept as a round avatar, a site header on
   dark and light, and a 16 px favicon tab. Show the user
-  \`preview.png\` and \`mockup.png\`. Ask which concept they want, or
-  none of them.`);
+  \`preview.png\` and \`mockup.png\`. Ask which concept they want, which
+  one to refine, or none of them.`);
 
   switch (pick.choice) {
+    case "refine 1":
+      return @./pick/refine(project=project, n=`1`);
+    case "refine 2":
+      return @./pick/refine(project=project, n=`2`);
+    case "refine 3":
+      return @./pick/refine(project=project, n=`3`);
     case "none of them":
       return `Ask the user what to change. Write the answer to
       \`.logo/feedback.md\` in ${project}. Then start logo-creation again
