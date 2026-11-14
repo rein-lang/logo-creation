@@ -63,7 +63,7 @@ Work files go to `<project>/.logo/`. The program deletes that folder at the end.
 - **Subagent hand-off.** `draw_concepts.rein` uses `delegate` to give the drawing to a subagent.
 - **Retry without a cycle.** Rein has no loops. On "none of them", the agent writes the feedback to `.logo/feedback.md` and starts the program again. `main` finds the brief and goes to `draw_concepts`.
 - **Nested files.** A function with one caller lives in a folder named after the caller: `draw_concepts/pick.rein`, `draw_concepts/pick/save.rein`.
-- **Names.** Each file is a snake_case imperative verb: `write_brief`, `draw_concepts`, `pick`, `save`. A folder is the subject its single caller names. Parameters and answers are snake_case too. The rules are in [Naming](https://rein-lang.com/reference/decisions#naming).
+- **Names.** Each file is a snake_case imperative verb: `write_brief`, `draw_concepts`, `pick`, `save`. A folder is the subject its single caller names. Parameters and answers are snake_case too. The rules are in [Naming](https://rein-lang.com/docs/reference/decisions#naming).
 
 ## Develop
 
