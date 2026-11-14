@@ -17,8 +17,12 @@ export default async function pick({ project }: Input) {
   const pick: Pick = await request(`Run scripts/preview.sh
   ${project}/.logo/concepts from this program's folder. It writes
   \`preview.png\` next to the concepts: each one at 16, 32 and 256
-  pixels, on white and on #0d1117. Show the user \`preview.png\`. Ask
-  which concept they want, or none of them.`);
+  pixels, on white and on #0d1117. Then run scripts/mockup.sh
+  ${project}/.logo/concepts from this program's folder. It writes
+  \`mockup.png\`: each concept as a round avatar, a site header on
+  dark and light, and a 16 px favicon tab. Show the user
+  \`preview.png\` and \`mockup.png\`. Ask which concept they want, or
+  none of them.`);
 
   switch (pick.choice) {
     case "none of them":

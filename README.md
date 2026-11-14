@@ -43,8 +43,9 @@ flowchart TD
 | `main.rein` | Entry. Resumes from `.logo/brief.md` when an earlier run wrote it. |
 | `write_brief.rein` | Reads the project and writes the brief. Asks before it replaces a logo. |
 | `draw_concepts.rein` | A subagent draws three SVG concepts. `scripts/check-svg.sh` checks them. |
-| `draw_concepts/pick.rein` | `scripts/preview.sh` renders the concepts. The user picks one. |
+| `draw_concepts/pick.rein` | `scripts/preview.sh` renders the concepts. `scripts/mockup.sh` shows them in place. The user picks one. |
 | `draw_concepts/pick/save.rein` | `scripts/export.sh` saves the logo files to `assets/`. |
+| `scripts/mockup.sh` | Shows each concept as a round avatar, a site header and a favicon. |
 | `scripts/test.sh` | Self-test for the scripts. |
 
 ## Output

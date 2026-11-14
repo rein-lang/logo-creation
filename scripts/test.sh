@@ -21,6 +21,8 @@ grep -q "2.svg: missing" "$tmp/bad.log"
 
 "$here/preview.sh" "$tmp/good" > /dev/null
 test -s "$tmp/good/preview.png"
+"$here/mockup.sh" "$tmp/good" Test > /dev/null
+test -s "$tmp/good/mockup.png"
 
 "$here/export.sh" "$tmp/good/1.svg" "$tmp/assets" > /dev/null
 for f in logo.svg logo-16.png logo-512.png favicon.ico; do
