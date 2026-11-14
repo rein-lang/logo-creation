@@ -58,6 +58,7 @@ The program writes these files to `<project>/assets/`:
 - `logo.svg`
 - `logo-16.png`, `logo-32.png`, `logo-48.png`, `logo-180.png`, `logo-192.png`, `logo-512.png`
 - `favicon.ico` (16, 32 and 48 px)
+- `logo-square.svg`, `logo-circle.svg`, `logo-mark.svg` (the logo set) and a 512 px PNG of each: `logo-square-512.png`, `logo-circle-512.png`, `logo-mark-512.png`
 
 Work files go to `<project>/.logo/`. The program deletes that folder at the end.
 

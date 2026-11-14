@@ -10,10 +10,26 @@ interface Input {
  * to the README.
  */
 export default async function save({ project, svg }: Input) {
+  /** Did the subagent write the three set versions? */
+  const made: boolean = await request(
+    delegate(model=`use opus model`, task=`Read \`${svg}\`. Make three more
+    versions of this SVG from the same paths. Write them to
+    \`${project}/.logo/set/\`: \`logo-square.svg\` (inside a full rounded
+    square), \`logo-circle.svg\` (inside a circle, for avatars) and
+    \`logo-mark.svg\` (no container, readable on white and on #0d1117).
+    Only move or scale the group and change fills. Answer yes when all
+    three exist.`),
+  );
+
+  if (!made) {
+    return askUser(question=`The logo set for ${project} was not made.
+    Make it again, or stop?`);
+  }
+
   /** Did `scripts/export.sh` write every logo file? */
   const saved: boolean = await request(`Run scripts/export.sh ${svg}
-  ${project}/assets from this program's folder. Answer yes when it exits
-  0.`);
+  ${project}/assets ${project}/.logo/set from this program's folder.
+  Answer yes when it exits 0.`);
 
   if (!saved) {
     return askUser(question=`scripts/export.sh failed for ${svg}. Install
@@ -21,8 +37,9 @@ export default async function save({ project, svg }: Input) {
   }
 
   return `The logo of ${project} is in \`assets/\`: logo.svg, PNG files
-  from 16 to 512 pixels, and favicon.ico. Add the logo to the README of
-  ${project}: a centered \`<p align="center"><img src="assets/logo.svg"
-  width="160"></p>\` above the title. Delete \`.logo/\` in ${project}.
-  Show the user the result.`;
+  from 16 to 512 pixels, favicon.ico, and the set logo-square.svg,
+  logo-circle.svg and logo-mark.svg with a 512 px PNG of each. Add the
+  logo to the README of ${project}: a centered \`<p align="center"><img
+  src="assets/logo.svg" width="160"></p>\` above the title. Delete
+  \`.logo/\` in ${project}. Show the user the result.`;
 }

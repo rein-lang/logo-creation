@@ -28,4 +28,11 @@ test -s "$tmp/good/mockup.png"
 for f in logo.svg logo-16.png logo-512.png favicon.ico; do
   test -s "$tmp/assets/$f"
 done
+
+mkdir "$tmp/set"
+cp "$tmp/good/1.svg" "$tmp/set/logo-square.svg"
+"$here/export.sh" "$tmp/good/1.svg" "$tmp/set-out" "$tmp/set" > /dev/null
+for f in logo-square.svg logo-square-512.png; do
+  test -s "$tmp/set-out/$f"
+done
 echo "scripts ok"
