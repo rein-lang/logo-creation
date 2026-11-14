@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.svg" width="160" alt="logo-creation logo"></p>
+
 # logo-creation
 
 A [Rein](https://rein-lang.com) program that creates a logo for a project. The agent writes a brief, draws three SVG concepts, and checks them with a script. The user picks one. The agent saves the logo files and adds the logo to the README.
