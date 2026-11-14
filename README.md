@@ -26,12 +26,12 @@ rein step logo-creation --input project=<path to the project>
 
 ```mermaid
 flowchart TD
-    M["main"] -- "no brief yet" --> B["brief"]
-    M -- "brief exists" --> C["concepts"]
+    M["main"] -- "no brief yet" --> B["write_brief"]
+    M -- "brief exists" --> C["draw_concepts"]
     B -- "no logo, or user wants a new one" --> C
     B -- "user keeps the logo" --> K["done"]
-    C -- "drawn and checked" --> P["concepts/pick"]
-    P -- "picked 1, 2 or 3" --> S["concepts/pick/save"]
+    C -- "drawn and checked" --> P["draw_concepts/pick"]
+    P -- "picked 1, 2 or 3" --> S["draw_concepts/pick/save"]
     P -- "none of them" --> F["write feedback, start again"]
     F -.-> M
 ```
@@ -39,10 +39,10 @@ flowchart TD
 | File | Job |
 | --- | --- |
 | `main.rein` | Entry. Resumes from `.logo/brief.md` when an earlier run wrote it. |
-| `brief.rein` | Reads the project and writes the brief. Asks before it replaces a logo. |
-| `concepts.rein` | A subagent draws three SVG concepts. `scripts/check-svg.sh` checks them. |
-| `concepts/pick.rein` | `scripts/preview.sh` renders the concepts. The user picks one. |
-| `concepts/pick/save.rein` | `scripts/export.sh` saves the logo files to `assets/`. |
+| `write_brief.rein` | Reads the project and writes the brief. Asks before it replaces a logo. |
+| `draw_concepts.rein` | A subagent draws three SVG concepts. `scripts/check-svg.sh` checks them. |
+| `draw_concepts/pick.rein` | `scripts/preview.sh` renders the concepts. The user picks one. |
+| `draw_concepts/pick/save.rein` | `scripts/export.sh` saves the logo files to `assets/`. |
 | `scripts/test.sh` | Self-test for the scripts. |
 
 ## Output
@@ -57,12 +57,13 @@ Work files go to `<project>/.logo/`. The program deletes that folder at the end.
 
 ## Patterns this program shows
 
-- **Rules in code.** Typed answers (`boolean`, unions) pick the branch. The prompt text does not decide. See the `info.logo == "has a logo"` check in `brief.rein`.
+- **Rules in code.** Typed answers (`boolean`, unions) pick the branch. The prompt text does not decide. See the `info.logo == "has a logo"` check in `write_brief.rein`.
 - **Scripts, not inline commands.** Each shell step is a script in `scripts/`. A request names the script and its arguments. You can run and test each script by hand.
 - **A script as a gate.** `check-svg.sh` checks each concept: a square `viewBox`, no `<text>`, no `<image>`, at most 3 colors, at most 8 KB. The flow goes on only when it exits 0.
-- **Subagent hand-off.** `concepts.rein` uses `delegate` to give the drawing to a subagent.
-- **Retry without a cycle.** Rein has no loops. On "none of them", the agent writes the feedback to `.logo/feedback.md` and starts the program again. `main` finds the brief and goes to `concepts`.
-- **Nested files.** A function with one caller lives in a folder named after the caller: `concepts/pick.rein`, `concepts/pick/save.rein`.
+- **Subagent hand-off.** `draw_concepts.rein` uses `delegate` to give the drawing to a subagent.
+- **Retry without a cycle.** Rein has no loops. On "none of them", the agent writes the feedback to `.logo/feedback.md` and starts the program again. `main` finds the brief and goes to `draw_concepts`.
+- **Nested files.** A function with one caller lives in a folder named after the caller: `draw_concepts/pick.rein`, `draw_concepts/pick/save.rein`.
+- **Names.** Each file is a snake_case imperative verb: `write_brief`, `draw_concepts`, `pick`, `save`. A folder is the subject its single caller names. Parameters and answers are snake_case too. The rules are in [Naming](https://rein-lang.com/reference/decisions#naming).
 
 ## Develop
 

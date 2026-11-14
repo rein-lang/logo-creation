@@ -14,7 +14,7 @@ interface Project {
  * Read the project and write the logo brief. Ask before a new logo
  * replaces the current one.
  */
-export default async function brief({ project }: Input) {
+export default async function write_brief({ project }: Input) {
   /** What does the project have, and is the brief written? */
   const info: Project = await request(`Read the README, the package
   manifest and the docs of ${project}. Look for a logo file (logo.svg,
@@ -38,8 +38,8 @@ export default async function brief({ project }: Input) {
       \`.logo/\` in ${project}. Nothing else to do.`;
     }
 
-    return @./concepts(project=project);
+    return @./draw_concepts(project=project);
   }
 
-  return @./concepts(project=project);
+  return @./draw_concepts(project=project);
 }

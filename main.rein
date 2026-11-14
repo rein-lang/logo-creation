@@ -13,8 +13,8 @@ export default async function main({ project }: Input) {
   exists in ${project}.`);
 
   if (resume) {
-    return @./concepts(project=project);
+    return @./draw_concepts(project=project);
   }
 
-  return @./brief(project=project);
+  return @./write_brief(project=project);
 }

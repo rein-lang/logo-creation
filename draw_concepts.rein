@@ -7,7 +7,7 @@ interface Input {
  * Draw three SVG logo concepts from the brief, then check them with a
  * script.
  */
-export default async function concepts({ project }: Input) {
+export default async function draw_concepts({ project }: Input) {
   /** Did the subagent write the three concepts? */
   const drawn: boolean = await request(
     delegate(model=`use opus model`, task=`Read \`.logo/brief.md\` and,
@@ -35,5 +35,5 @@ export default async function concepts({ project }: Input) {
     scripts/check-svg.sh. Fix them by hand, or draw new ones?`);
   }
 
-  return @./concepts/pick(project=project);
+  return @./draw_concepts/pick(project=project);
 }
