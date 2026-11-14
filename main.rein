@@ -1,0 +1,20 @@
+interface Input {
+  /** The path of the project folder that needs a logo. */
+  project: string;
+}
+
+/**
+ * Create a logo for a project: write a brief, draw three SVG concepts,
+ * let the user pick one, then save the logo files.
+ */
+export default async function main({ project }: Input) {
+  /** Does `.logo/brief.md` exist in the project from an earlier run? */
+  const resume: boolean = await request(`Check if \`.logo/brief.md\`
+  exists in ${project}.`);
+
+  if (resume) {
+    return @./concepts(project=project);
+  }
+
+  return @./brief(project=project);
+}

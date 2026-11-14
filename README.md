@@ -1,0 +1,73 @@
+# logo-creation
+
+A [Rein](https://rein-lang.com) program that creates a logo for a project. The agent writes a brief, draws three SVG concepts, and checks them with a script. The user picks one. The agent saves the logo files and adds the logo to the README.
+
+This repo is also an example of a Rein program. It shows typed questions, a subagent hand-off, bundled scripts, and a retry without a cycle.
+
+## Install
+
+```sh
+rein install -g "github:rein-lang/logo-creation#<commit sha>"
+```
+
+The scripts need `rsvg-convert` (librsvg), ImageMagick 7 (`magick`) and `xmllint`. On macOS:
+
+```sh
+brew install librsvg imagemagick
+```
+
+## Use
+
+```sh
+rein step logo-creation --input project=<path to the project>
+```
+
+## Flow
+
+```mermaid
+flowchart TD
+    M["main"] -- "no brief yet" --> B["brief"]
+    M -- "brief exists" --> C["concepts"]
+    B -- "no logo, or user wants a new one" --> C
+    B -- "user keeps the logo" --> K["done"]
+    C -- "drawn and checked" --> P["concepts/pick"]
+    P -- "picked 1, 2 or 3" --> S["concepts/pick/save"]
+    P -- "none of them" --> F["write feedback, start again"]
+    F -.-> M
+```
+
+| File | Job |
+| --- | --- |
+| `main.rein` | Entry. Resumes from `.logo/brief.md` when an earlier run wrote it. |
+| `brief.rein` | Reads the project and writes the brief. Asks before it replaces a logo. |
+| `concepts.rein` | A subagent draws three SVG concepts. `scripts/check-svg.sh` checks them. |
+| `concepts/pick.rein` | `scripts/preview.sh` renders the concepts. The user picks one. |
+| `concepts/pick/save.rein` | `scripts/export.sh` saves the logo files to `assets/`. |
+| `scripts/test.sh` | Self-test for the scripts. |
+
+## Output
+
+The program writes these files to `<project>/assets/`:
+
+- `logo.svg`
+- `logo-16.png`, `logo-32.png`, `logo-48.png`, `logo-180.png`, `logo-192.png`, `logo-512.png`
+- `favicon.ico` (16, 32 and 48 px)
+
+Work files go to `<project>/.logo/`. The program deletes that folder at the end.
+
+## Patterns this program shows
+
+- **Rules in code.** Typed answers (`boolean`, unions) pick the branch. The prompt text does not decide. See the `info.logo == "has a logo"` check in `brief.rein`.
+- **Scripts, not inline commands.** Each shell step is a script in `scripts/`. A request names the script and its arguments. You can run and test each script by hand.
+- **A script as a gate.** `check-svg.sh` checks each concept: a square `viewBox`, no `<text>`, no `<image>`, at most 3 colors, at most 8 KB. The flow goes on only when it exits 0.
+- **Subagent hand-off.** `concepts.rein` uses `delegate` to give the drawing to a subagent.
+- **Retry without a cycle.** Rein has no loops. On "none of them", the agent writes the feedback to `.logo/feedback.md` and starts the program again. `main` finds the brief and goes to `concepts`.
+- **Nested files.** A function with one caller lives in a folder named after the caller: `concepts/pick.rein`, `concepts/pick/save.rein`.
+
+## Develop
+
+Run `git config core.hooksPath .githooks` once. Each push then runs `rein check .` and `scripts/test.sh`. Both must pass, and `rein check .` must report 0 errors and 0 warnings.
+
+## License
+
+MIT

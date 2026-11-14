@@ -1,0 +1,28 @@
+interface Input {
+  /** The path of the project folder that needs a logo. */
+  project: string;
+  /** The path of the concept SVG the user picked. */
+  svg: string;
+}
+
+/**
+ * Save the picked concept as the project's logo files, then add the logo
+ * to the README.
+ */
+export default async function save({ project, svg }: Input) {
+  /** Did `scripts/export.sh` write every logo file? */
+  const saved: boolean = await request(`Run scripts/export.sh ${svg}
+  ${project}/assets from this program's folder. Answer yes when it exits
+  0.`);
+
+  if (!saved) {
+    return askUser(question=`scripts/export.sh failed for ${svg}. Install
+    rsvg-convert and ImageMagick, then run logo-creation again?`);
+  }
+
+  return `The logo of ${project} is in \`assets/\`: logo.svg, PNG files
+  from 16 to 512 pixels, and favicon.ico. Add the logo to the README of
+  ${project}: a centered \`<p align="center"><img src="assets/logo.svg"
+  width="160"></p>\` above the title. Delete \`.logo/\` in ${project}.
+  Show the user the result.`;
+}

@@ -1,0 +1,36 @@
+interface Input {
+  /** The path of the project folder that needs a logo. */
+  project: string;
+}
+
+interface Pick {
+  /** Which concept did the user pick? */
+  choice: "1" | "2" | "3" | "none of them";
+}
+
+/**
+ * Show the concepts to the user and let them pick one. A rejected round
+ * saves the feedback for the next run.
+ */
+export default async function pick({ project }: Input) {
+  /** Which concept does the user pick? */
+  const pick: Pick = await request(`Run scripts/preview.sh
+  ${project}/.logo/concepts from this program's folder. It writes
+  \`preview.png\` next to the concepts: each one at 16, 32 and 256
+  pixels, on white and on #0d1117. Show the user \`preview.png\`. Ask
+  which concept they want, or none of them.`);
+
+  switch (pick.choice) {
+    case "none of them":
+      return `Ask the user what to change. Write the answer to
+      \`.logo/feedback.md\` in ${project}. Then start logo-creation again
+      for ${project}. It finds the brief and draws new concepts.`;
+    case "1":
+    case "2":
+    case "3":
+      return @./pick/save(
+        project=project,
+        svg=`${project}/.logo/concepts/${pick.choice}.svg`,
+      );
+  }
+}

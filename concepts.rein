@@ -1,0 +1,39 @@
+interface Input {
+  /** The path of the project folder that needs a logo. */
+  project: string;
+}
+
+/**
+ * Draw three SVG logo concepts from the brief, then check them with a
+ * script.
+ */
+export default async function concepts({ project }: Input) {
+  /** Did the subagent write the three concepts? */
+  const drawn: boolean = await request(
+    delegate(model=`use opus model`, task=`Read \`.logo/brief.md\` and,
+    if it exists, \`.logo/feedback.md\` in ${project}. Draw three
+    different logo concepts by hand as SVG: \`.logo/concepts/1.svg\`,
+    \`2.svg\` and \`3.svg\`. Each one is a simple mark that reads at 16
+    pixels: a square viewBox, flat shapes, at most three colors, no text,
+    no embedded images. Each one must stay legible on white and on
+    #0d1117. Write over older concepts. Answer yes when all three exist.`),
+  );
+
+  if (!drawn) {
+    return askUser(question=`The logo concepts for ${project} were not
+    drawn. Draw them again, or stop?`);
+  }
+
+  /** Does `scripts/check-svg.sh` pass now? */
+  const valid: boolean = await request(`Run scripts/check-svg.sh
+  ${project}/.logo/concepts from this program's folder. When it fails,
+  fix each concept it names and run it again, at most three times.
+  Answer yes when it exits 0.`);
+
+  if (!valid) {
+    return askUser(question=`The logo concepts for ${project} still fail
+    scripts/check-svg.sh. Fix them by hand, or draw new ones?`);
+  }
+
+  return @./concepts/pick(project=project);
+}

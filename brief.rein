@@ -1,0 +1,45 @@
+interface Input {
+  /** The path of the project folder that needs a logo. */
+  project: string;
+}
+
+interface Project {
+  /** Does the project already have a logo file? */
+  logo: "none" | "has a logo";
+  /** Did you write the brief to `.logo/brief.md` in the project? */
+  brief: boolean;
+}
+
+/**
+ * Read the project and write the logo brief. Ask before a new logo
+ * replaces the current one.
+ */
+export default async function brief({ project }: Input) {
+  /** What does the project have, and is the brief written? */
+  const info: Project = await request(`Read the README, the package
+  manifest and the docs of ${project}. Look for a logo file (logo.svg,
+  logo.png, icon.svg, favicon, an image at the top of the README). Write
+  \`.logo/brief.md\` in ${project}: the project name, one sentence on what
+  it does, who uses it, three words for its character, and the colors it
+  already uses. Answer logo and brief.`);
+
+  if (!info.brief) {
+    return askUser(question=`I could not write a logo brief for
+    ${project}. What is the project, and who uses it?`);
+  }
+
+  if (info.logo == "has a logo") {
+    /** Does the user want a new logo instead of the current one? */
+    const replace: boolean = await request(`Show the user the current
+    logo of ${project}. Ask if they want a new logo instead.`);
+
+    if (!replace) {
+      return `The user keeps the current logo of ${project}. Delete
+      \`.logo/\` in ${project}. Nothing else to do.`;
+    }
+
+    return @./concepts(project=project);
+  }
+
+  return @./concepts(project=project);
+}
