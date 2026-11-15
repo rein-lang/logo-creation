@@ -24,7 +24,7 @@ brew install librsvg imagemagick
 rein step logo-creation --input project=<path to the project>
 ```
 
-## Flow
+## Graph
 
 ```mermaid
 flowchart TD
@@ -66,7 +66,7 @@ Work files go to `<project>/.logo/`. The program deletes that folder at the end.
 
 - **Rules in code.** Typed answers (`boolean`, unions) pick the branch. The prompt text does not decide. See the `info.logo == "has a logo"` check in `write_brief.rein`.
 - **Scripts, not inline commands.** Each shell step is a script in `scripts/`. A request names the script and its arguments. You can run and test each script by hand.
-- **A script as a gate.** `check-svg.sh` checks each concept: a square `viewBox`, no `<text>`, no `<image>`, at most 3 colors, at most 8 KB. The agent runs it and answers `valid`. The flow goes on only on yes.
+- **A script as a gate.** `check-svg.sh` checks each concept: a square `viewBox`, no `<text>`, no `<image>`, at most 3 colors, at most 8 KB. The agent runs it and answers `valid`. The process goes on only on yes.
 - **Subagent hand-off.** `draw_concepts.rein` uses `delegate` to give the drawing to a subagent.
 - **Retry without a cycle.** Rein has no loops. On "none of them", the agent writes the feedback to `.logo/feedback.md` and starts the program again. `main` finds the brief and goes to `draw_concepts`.
 - **Refine, not restart.** The user can pick a concept to refine. The next round draws variations of `.logo/base.svg`.
