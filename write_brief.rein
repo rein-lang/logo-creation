@@ -1,3 +1,5 @@
+import { draw_concepts } from "./draw_concepts";
+
 interface Input {
   /** The path of the project folder that needs a logo. */
   project: string;
@@ -38,8 +40,8 @@ export default async function write_brief({ project }: Input) {
       \`.logo/\` in ${project}. Nothing else to do.`;
     }
 
-    return @./draw_concepts(project=project);
+    return draw_concepts(project=project);
   }
 
-  return @./draw_concepts(project=project);
+  return draw_concepts(project=project);
 }

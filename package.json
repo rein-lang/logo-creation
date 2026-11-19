@@ -1,12 +1,12 @@
 {
   "name": "logo-creation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Create a logo for a project: write a brief, draw three SVG concepts, let the user pick one, then save the logo files.",
   "license": "MIT",
   "repository": "github:rein-lang/logo-creation",
   "keywords": ["rein", "logo", "svg", "branding"],
   "files": ["**/*.rein", "scripts/", "README.md", "rein.json"],
   "engines": {
-    "rein": "^0.1.0"
+    "rein": "^0.1.2"
   }
 }

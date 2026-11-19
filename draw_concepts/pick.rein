@@ -1,3 +1,6 @@
+import { refine } from "./pick/refine";
+import { save } from "./pick/save";
+
 interface Input {
   /** The path of the project folder that needs a logo. */
   project: string;
@@ -29,11 +32,11 @@ export default async function pick({ project }: Input) {
 
   switch (pick.choice) {
     case "refine 1":
-      return @./pick/refine(project=project, n=`1`);
+      return refine(project=project, n=`1`);
     case "refine 2":
-      return @./pick/refine(project=project, n=`2`);
+      return refine(project=project, n=`2`);
     case "refine 3":
-      return @./pick/refine(project=project, n=`3`);
+      return refine(project=project, n=`3`);
     case "none of them":
       return `Ask the user what to change. Write the answer to
       \`.logo/feedback.md\` in ${project}. Then start logo-creation again
@@ -41,7 +44,7 @@ export default async function pick({ project }: Input) {
     case "1":
     case "2":
     case "3":
-      return @./pick/save(
+      return save(
         project=project,
         svg=`${project}/.logo/concepts/${pick.choice}.svg`,
       );
