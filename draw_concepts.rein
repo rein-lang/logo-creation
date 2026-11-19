@@ -1,3 +1,5 @@
+import { pick } from "./draw_concepts/pick";
+
 interface Input {
   /** The path of the project folder that needs a logo. */
   project: string;
@@ -37,5 +39,5 @@ export default async function draw_concepts({ project }: Input) {
     scripts/check-svg.sh. Fix them by hand, or draw new ones?`);
   }
 
-  return @./draw_concepts/pick(project=project);
+  return pick(project=project);
 }
